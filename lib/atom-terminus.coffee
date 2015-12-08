@@ -5,7 +5,7 @@ platform = require('os').platform
 {CompositeDisposable} = require 'atom'
 
 ###
-   Opens a terminal in the given directory, as specefied by the config
+  Opens a terminal in the given directory, as specefied by the config
 ###
 open_terminal = (dirpath) ->
   # Figure out the app and the arguments
@@ -22,7 +22,7 @@ open_terminal = (dirpath) ->
 
   # If we do not supress the directory argument, add the directory as an argument
   if !surpressDirArg
-      cmdline  += " \"#{dirpath}\""
+    cmdline  += " \"#{dirpath}\""
 
   # For mac, we prepend open -a unless we run it directly
   if platform() == "darwin" && !runDirectly
@@ -43,37 +43,37 @@ open_terminal = (dirpath) ->
 
 
 module.exports =
-    subscriptions: null
+  subscriptions: null
 
-    activate: ->
-        @subscriptions = new CompositeDisposable
-        @subscriptions.add atom.commands.add "atom-workspace", "atom-terminus:open", => @open()
-        @subscriptions.add atom.commands.add "atom-workspace", "atom-terminus:open-project-root", => @openroot()
-    deactivate: ->
-        @subscriptions?.dispose()
-        @subscriptions = null
-    open: ->
-        editor = atom.workspace.getActivePaneItem()
-        file = editor?.buffer?.file
-        filepath = file?.path
-        if filepath
-            open_terminal path.dirname(filepath)
-    openroot: ->
-        root_paths = atom.project.getPaths()
-        if root_paths.length > 1
-            editor = atom.workspace.getActivePaneItem()
-            file = editor?.buffer?.file
-            filepath = file?.path
-            if filepath
-                this_path = path.dirname(filepath)
-                for root_path in root_paths
-                    path_matches = root_path is this_path
-                    path_in_root = this_path.indexOf(root_path + path.sep) is 0
-                    if path_matches or path_in_root
-                        open_terminal root_path
-                        break
-        else
-            open_terminal pathname for pathname in root_paths
+  activate: ->
+    @subscriptions = new CompositeDisposable
+    @subscriptions.add atom.commands.add "atom-workspace", "atom-terminus:open", => @open()
+    @subscriptions.add atom.commands.add "atom-workspace", "atom-terminus:open-project-root", => @openroot()
+  deactivate: ->
+    @subscriptions?.dispose()
+    @subscriptions = null
+  open: ->
+    editor = atom.workspace.getActivePaneItem()
+    file = editor?.buffer?.file
+    filepath = file?.path
+    if filepath
+      open_terminal path.dirname(filepath)
+  openroot: ->
+    root_paths = atom.project.getPaths()
+    if root_paths.length > 1
+      editor = atom.workspace.getActivePaneItem()
+      file = editor?.buffer?.file
+      filepath = file?.path
+      if filepath
+        this_path = path.dirname(filepath)
+        for root_path in root_paths
+          path_matches = root_path is this_path
+          path_in_root = this_path.indexOf(root_path + path.sep) is 0
+          if path_matches or path_in_root
+            open_terminal root_path
+            break
+    else
+      open_terminal pathname for pathname in root_paths
 
 # Set per-platform defaults
 if platform() == 'darwin'
@@ -97,21 +97,21 @@ if platform() == 'darwin'
 else if platform() == 'win32'
   # Defaults for windows, use cmd.exe as default
   module.exports.config =
-      app:
-        type: 'string'
-        default: 'C:\\Windows\\System32\\cmd.exe'
-      args:
-        type: 'string'
-        default: ''
-      surpressDirectoryArgument:
-        type: 'boolean'
-        default: false
-      setWorkingDirectory:
-        type: 'boolean'
-        default: true
-      MacWinRunDirectly:
-        type: 'boolean'
-        default: false
+    app:
+      type: 'string'
+      default: 'C:\\Windows\\System32\\cmd.exe'
+    args:
+      type: 'string'
+      default: ''
+    surpressDirectoryArgument:
+      type: 'boolean'
+      default: false
+    setWorkingDirectory:
+      type: 'boolean'
+      default: true
+    MacWinRunDirectly:
+      type: 'boolean'
+      default: false
 else
   # Defaults for all other systems (linux I assume)
   # Check for existance of common terminals and set appropriate default args
@@ -124,24 +124,24 @@ else
   ]
   default_term = {path: '/usr/bin/x-terminal-emulator', args: ''}
   for term in linux_terms
-      try
-        if fs.statSync(term.path).isFile()
-          default_term = term
-          break
+    try
+      if fs.statSync(term.path).isFile()
+        default_term = term
+        break
 
   module.exports.config =
-      app:
-        type: 'string'
-        default: default_term.path
-      args:
-        type: 'string'
-        default: default_term.args
-      surpressDirectoryArgument:
-        type: 'boolean'
-        default: false
-      setWorkingDirectory:
-        type: 'boolean'
-        default: true
-      MacWinRunDirectly:
-        type: 'boolean'
-        default: false
+    app:
+      type: 'string'
+      default: default_term.path
+    args:
+      type: 'string'
+      default: default_term.args
+    surpressDirectoryArgument:
+      type: 'boolean'
+      default: false
+    setWorkingDirectory:
+      type: 'boolean'
+      default: true
+    MacWinRunDirectly:
+      type: 'boolean'
+      default: false
