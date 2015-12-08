@@ -8,13 +8,13 @@ platform = require('os').platform
 ###
 open_terminal = (dirpath) ->
   # Figure out the app and the arguments
-  app = atom.config.get('atom-terminal.app')
-  args = atom.config.get('atom-terminal.args')
+  app = atom.config.get('atom-terminus.app')
+  args = atom.config.get('atom-terminus.args')
 
   # get options
-  setWorkingDirectory = atom.config.get('atom-terminal.setWorkingDirectory')
-  surpressDirArg = atom.config.get('atom-terminal.surpressDirectoryArgument')
-  runDirectly = atom.config.get('atom-terminal.MacWinRunDirectly')
+  setWorkingDirectory = atom.config.get('atom-terminus.setWorkingDirectory')
+  surpressDirArg = atom.config.get('atom-terminus.surpressDirectoryArgument')
+  runDirectly = atom.config.get('atom-terminus.MacWinRunDirectly')
 
   # Start assembling the command line
   cmdline = "\"#{app}\" #{args}"
@@ -32,7 +32,7 @@ open_terminal = (dirpath) ->
     cmdline = "start \"\" " + cmdline
 
   # log the command so we have context if it fails
-  console.log("atom-terminal executing: ", cmdline)
+  console.log("atom-terminus executing: ", cmdline)
 
   # Set the working directory if configured
   if setWorkingDirectory
@@ -43,8 +43,8 @@ open_terminal = (dirpath) ->
 
 module.exports =
     activate: ->
-        atom.commands.add "atom-workspace", "atom-terminal:open", => @open()
-        atom.commands.add "atom-workspace", "atom-terminal:open-project-root", => @openroot()
+        atom.commands.add "atom-workspace", "atom-terminus:open", => @open()
+        atom.commands.add "atom-workspace", "atom-terminus:open-project-root", => @openroot()
     open: ->
         editor = atom.workspace.getActivePaneItem()
         file = editor?.buffer?.file

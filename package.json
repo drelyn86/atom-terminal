@@ -1,15 +1,15 @@
 {
-  "name": "atom-terminal",
-  "main": "./lib/atom-terminal",
+  "name": "atom-terminus",
+  "main": "./lib/atom-terminus",
   "version": "0.8.1",
   "description": "Open terminal in the current file's directory.",
   "activationCommands": {
     "atom-workspace": [
-      "atom-terminal:open",
-      "atom-terminal:open-project-root"
+      "atom-terminus:open",
+      "atom-terminus:open-project-root"
     ]
   },
-  "repository": "https://github.com/karan/atom-terminal",
+  "repository": "https://github.com/drelyn86/atom-terminus",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
