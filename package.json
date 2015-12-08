@@ -1,7 +1,7 @@
 {
   "name": "atom-terminus",
   "main": "./lib/atom-terminus",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "description": "Open terminal in the current file's directory.\nThis is a fork of the atom-terminal package with various improvements.",
   "activationCommands": {
     "atom-workspace": [
