@@ -16,4 +16,4 @@ Config:
     args: "--useThisOptionWhenLaunchingTerminal"
 ```
 
-![atom-terminus](https://raw.github.com/karan/atom-terminal/master/terminal.gif)
+![atom-terminus](https://raw.github.com/drelyn86/atom-terminus/master/terminus.gif)
