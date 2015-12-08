@@ -61,7 +61,7 @@ module.exports =
                 this_path = path.dirname(filepath)
                 for root_path in root_paths
                     path_matches = root_path is this_path
-                    path_in_root = this_path.indexOf(root_path+'/') is 0
+                    path_in_root = this_path.indexOf(root_path + path.sep) is 0
                     if path_matches or path_in_root
                         open_terminal root_path
                         break
