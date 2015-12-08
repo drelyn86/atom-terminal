@@ -16,4 +16,11 @@ Config:
     args: "--useThisOptionWhenLaunchingTerminal"
 ```
 
+## What's New?
+
+The following are improvements that you will find in this package which are not in atom-terminal:
+
+- Support for multiple project roots
+- Better Linux support
+
 ![atom-terminus](https://raw.github.com/drelyn86/atom-terminus/master/terminus.gif)
