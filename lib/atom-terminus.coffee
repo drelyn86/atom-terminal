@@ -2,6 +2,7 @@ exec = require('child_process').exec
 fs = require('fs')
 path = require('path')
 platform = require('os').platform
+{CompositeDisposable} = require 'atom'
 
 ###
    Opens a terminal in the given directory, as specefied by the config
@@ -42,9 +43,15 @@ open_terminal = (dirpath) ->
 
 
 module.exports =
+    subscriptions: null
+
     activate: ->
-        atom.commands.add "atom-workspace", "atom-terminus:open", => @open()
-        atom.commands.add "atom-workspace", "atom-terminus:open-project-root", => @openroot()
+        @subscriptions = new CompositeDisposable
+        @subscriptions.add atom.commands.add "atom-workspace", "atom-terminus:open", => @open()
+        @subscriptions.add atom.commands.add "atom-workspace", "atom-terminus:open-project-root", => @openroot()
+    deactivate: ->
+        @subscriptions?.dispose()
+        @subscriptions = null
     open: ->
         editor = atom.workspace.getActivePaneItem()
         file = editor?.buffer?.file
