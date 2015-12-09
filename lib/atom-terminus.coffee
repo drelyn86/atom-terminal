@@ -102,7 +102,7 @@ if platform() == 'darwin'
       default: ''
     commandPrefix:
       type: 'string'
-      default: 'open -a'
+      default: ''
     setWorkingDirectory:
       type: 'boolean'
       default: true
@@ -120,7 +120,7 @@ else if platform() == 'win32'
       default: ''
     commandPrefix:
       type: 'string'
-      default: 'start ""'
+      default: ''
     setWorkingDirectory:
       type: 'boolean'
       default: true
