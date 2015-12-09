@@ -7,30 +7,45 @@ platform = require('os').platform
 ###
   Opens a terminal in the given directory, as specefied by the config
 ###
-open_terminal = (dirpath) ->
+open_terminal = (dirpath, full_filepath) ->
   # Figure out the app and the arguments
+  prefix = atom.config.get('atom-terminus.commandPrefix')
   app = atom.config.get('atom-terminus.app')
   args = atom.config.get('atom-terminus.args')
 
+  # A single space in prefix or args should override defaults to empty
+  if prefix == ' '
+    prefix = ''
+  if args == ' '
+    args = ''
+
   # get options
   setWorkingDirectory = atom.config.get('atom-terminus.setWorkingDirectory')
-  surpressDirArg = atom.config.get('atom-terminus.surpressDirectoryArgument')
-  runDirectly = atom.config.get('atom-terminus.MacWinRunDirectly')
+  runDirectly = atom.config.get('atom-terminus.runDirectly')
+
+  # set relative_filepath
+  relative_filepath = full_filepath.replace(dirpath + path.sep, '')
 
   # Start assembling the command line
-  cmdline = "\"#{app}\" #{args}"
-
-  # If we do not supress the directory argument, add the directory as an argument
-  if !surpressDirArg
-    cmdline  += " \"#{dirpath}\""
+  cmdline = ""
+  if prefix
+    cmdline = "#{prefix} "
+  cmdline = "#{cmdline}\"#{app}\""
+  if args
+    cmdline = "#{cmdline} #{args}"
+  cmdline = cmdline.replace(/%d/g, dirpath)
+  cmdline = cmdline.replace(/%p/g, full_filepath)
+  cmdline = cmdline.replace(/%f/g, relative_filepath)
 
   # For mac, we prepend open -a unless we run it directly
   if platform() == "darwin" && !runDirectly
     cmdline = "open -a " + cmdline
-
   # for windows, we prepend start unless we run it directly.
   if platform() == "win32" && !runDirectly
     cmdline = "start \"\" " + cmdline
+  # for linux, we prepend sh unless we run it directly.
+  if platform() == "linux" && !runDirectly
+    cmdline = "sh -c \"" + cmdline.replace(/"/g, '\\"') + "\""
 
   # log the command so we have context if it fails
   console.log("atom-terminus executing: ", cmdline)
@@ -57,7 +72,7 @@ module.exports =
     file = editor?.buffer?.file
     filepath = file?.path
     if filepath
-      open_terminal path.dirname(filepath)
+      open_terminal path.dirname(filepath), filepath
   openroot: ->
     root_paths = atom.project.getPaths()
     if root_paths.length > 1
@@ -70,7 +85,7 @@ module.exports =
           path_matches = root_path is this_path
           path_in_root = this_path.indexOf(root_path + path.sep) is 0
           if path_matches or path_in_root
-            open_terminal root_path
+            open_terminal root_path, filepath
             break
     else
       open_terminal pathname for pathname in root_paths
@@ -85,13 +100,13 @@ if platform() == 'darwin'
     args:
       type: 'string'
       default: ''
-    surpressDirectoryArgument:
-      type: 'boolean'
-      default: false
+    commandPrefix:
+      type: 'string'
+      default: 'open -a'
     setWorkingDirectory:
       type: 'boolean'
       default: true
-    MacWinRunDirectly:
+    runDirectly:
       type: 'boolean'
       default: false
 else if platform() == 'win32'
@@ -103,24 +118,24 @@ else if platform() == 'win32'
     args:
       type: 'string'
       default: ''
-    surpressDirectoryArgument:
-      type: 'boolean'
-      default: false
+    commandPrefix:
+      type: 'string'
+      default: 'start ""'
     setWorkingDirectory:
       type: 'boolean'
       default: true
-    MacWinRunDirectly:
+    runDirectly:
       type: 'boolean'
       default: false
 else
-  # Defaults for all other systems (linux I assume)
+  # Defaults for Linux
   # Check for existance of common terminals and set appropriate default args
   linux_terms = [
-    {path: '/usr/bin/gnome-terminal', args: '--working-directory'},
-    {path: '/usr/bin/konsole', args: '--workdir'},
-    {path: '/usr/bin/xfce4-terminal', args: '--working-directory'},
-    {path: '/usr/bin/lxterminal', args: '--working-directory'},
-    {path: '/usr/bin/urxvt', args: '-cd'},
+    {path: '/usr/bin/gnome-terminal', args: '--working-directory "%d"'},
+    {path: '/usr/bin/konsole', args: '--workdir "%d"'},
+    {path: '/usr/bin/xfce4-terminal', args: '--working-directory "%d"'},
+    {path: '/usr/bin/lxterminal', args: '--working-directory "%d"'},
+    {path: '/usr/bin/urxvt', args: '-cd "%d"'},
   ]
   default_term = {path: '/usr/bin/x-terminal-emulator', args: ''}
   for term in linux_terms
@@ -136,12 +151,12 @@ else
     args:
       type: 'string'
       default: default_term.args
-    surpressDirectoryArgument:
-      type: 'boolean'
-      default: false
+    commandPrefix:
+      type: 'string'
+      default: ''
     setWorkingDirectory:
       type: 'boolean'
       default: true
-    MacWinRunDirectly:
+    runDirectly:
       type: 'boolean'
-      default: false
+      default: true
