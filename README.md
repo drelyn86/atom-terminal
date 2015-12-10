@@ -18,7 +18,7 @@ Install: `apm install atom-terminus`
 "atom-terminus":
     # only necessary if standard config doesn't find terminal app
     app: "/path/to/your/favorite/terminal"
-    args: "--useThisOptionWhenLaunchingTerminal"
+    args: "--use TheseOptions --when LaunchingTerminal"
     commandPrefix: "EnvironmentVariable=\"Value\""
 ```
 
@@ -50,7 +50,7 @@ The following can be used anywhere in the Args or Command Prefix:
 
 ### Examples
 
-**Set environment variables for current file, use directory argument, and execute an alternate shell in Linux**
+**(Linux) Set environment variables for current file, use directory argument, and execute an alternate shell**
 
 ```coffeescript
 "atom-terminus":
@@ -59,11 +59,11 @@ The following can be used anywhere in the Args or Command Prefix:
     commandPrefix: "p=\"%p\" f=\"%f\""
 ```
 
-**Clear environment variables and use directory argument in Windows**
+**(Windows) Clear environment variables and use directory argument**
 
 ```coffeescript
 "atom-terminus":
     app: "C:\\Windows\\System32\\cmd.exe"
     args: "/K \"set NODE_PATH=& set NODE_ENV=& cd \"%d\"\""
-    commandPrefix: "start \"\""
+    commandPrefix: ""
 ```
