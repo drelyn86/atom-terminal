@@ -77,7 +77,7 @@ module.exports =
     root_paths = atom.project.getPaths()
     editor = atom.workspace.getActivePaneItem()
     file = editor?.buffer?.file
-    filepath = file?.path
+    filepath = file?.path || editor?.selectedPath
     if filepath
       this_path = path.dirname(filepath)
       for root_path in root_paths
