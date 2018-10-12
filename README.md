@@ -59,6 +59,17 @@ The following can be used anywhere in the Args or Command Prefix:
     commandPrefix: "p=\"%p\" f=\"%f\""
 ```
 
+**Clearing node variables**
+
+Atom spawns new processes with the environment variables `NODE_ENV=production` and `NODE_PATH` to Atom's internal library path. If you plan on executing `npm install` or `yarn install`, you should clear these variables.
+
+On most non-Windows machines this will be as simple as:
+
+```coffeescript
+"atom-terminus":
+    commandPrefix: "NODE_ENV='' NODE_PATH=''"
+```
+
 **(Windows) Clear environment variables and use directory argument**
 
 ```coffeescript
