@@ -9,7 +9,7 @@
       "atom-terminus:open-project-root"
     ]
   },
-  "repository": "https://github.com/drelyn86/atom-terminus",
+  "repository": "https://github.com/duhdugg/atom-terminus",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
