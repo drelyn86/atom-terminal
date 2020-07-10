@@ -93,10 +93,10 @@ if platform() == 'darwin'
   module.exports.config =
     app:
       type: 'string'
-      default: 'Terminal.app'
+      default: 'Terminal'
     args:
       type: 'string'
-      default: ''
+      default: '%d'
     commandPrefix:
       type: 'string'
       default: ''
